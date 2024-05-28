@@ -10,14 +10,14 @@ export default {
     <form class="mb-3">
         <!-- Email input -->
         <div data-mdb-input-init class="form-outline mb-4">
-            <input type="email" id="form1Example1" class="form-control" />
-            <label class="form-label" for="form1Example1">Email address</label>
+            <input type="text" id="usuario" class="form-control" />
+            <label class="form-label" for="usuario">Usuario</label>
         </div>
 
         <!-- Password input -->
         <div data-mdb-input-init class="form-outline mb-4">
-            <input type="password" id="form1Example2" class="form-control" />
-            <label class="form-label" for="form1Example2">Password</label>
+            <input type="password" id="password" class="form-control" />
+            <label class="form-label" for="password">Password</label>
         </div>
 
         <!-- Submit button -->

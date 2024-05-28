@@ -4,9 +4,9 @@ import Login from '../views/Login.vue';
 import LecturaPedidos from '../views/LecturaPedidos.vue';
 
 const routes = [
-    { path: '/',                component: Home,},
-    { path: '/login',           component: Login,},
-    { path: '/lectura-pedidos',  component: LecturaPedidos,},
+    { path: '/',                    component: Home,},
+    { path: '/login',               component: Login,},
+    { path: '/lectura-pedidos',     component: LecturaPedidos,},
 ];
 
 const router = createRouter({

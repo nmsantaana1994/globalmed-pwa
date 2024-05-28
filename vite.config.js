@@ -12,6 +12,10 @@ export default {
                 description:
                     "PWA desarrollada para uso en desposito de GlobalMed",
                 theme_color: "#ffffff",
+                background_color: "#ffffff",
+                display: "standalone",
+                scope: "/",
+                start_url: "/",
                 icons: [
                     {
                         src: "img/icons/android-chrome-192x192.png",
@@ -24,6 +28,7 @@ export default {
                         type: "image/png",
                     },
                 ],
+                splash_pages: null,
             },
             workbox: {
                 runtimeCaching: [

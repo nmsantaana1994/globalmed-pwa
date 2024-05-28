@@ -5,46 +5,33 @@ export default {
 </script>
 
 <template>
-    <div class="container-fluid p-0">
-        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button
-                data-mdb-collapse-init
-                class="navbar-toggler"
-                type="button"
-                data-mdb-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-                >
-                <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">GlobalMed</a>
+            <div class="d-flex">
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item me-2">
+                        <router-link to='/' class="nav-link active">Home</router-link>
+                    </li>
+                    <li class="nav-item me-2">
+                        <router-link to='/lectura-pedidos' class="nav-link active">LecturaFC</router-link>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link disabled"
-                        >Disabled</a
-                    >
+                        <router-link to='/login' class="nav-link active">Login</router-link>
                     </li>
                 </ul>
-                </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <main>
-            
-        </main>
-    </div>
+    <main class="container">
+        <router-view />
+    </main>
+
+    <footer>
+        <p class="text-center">&copy; Nico Santa Ana 2024</p>
+    </footer>
 </template>
 
 <style scoped>

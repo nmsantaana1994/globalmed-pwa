@@ -47,4 +47,13 @@ export default {
             },
         }),
     ],
+    server: {
+        proxy: {
+            "/api": {
+                target: "http://localhost:63644",
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ""),
+            },
+        },
+    },
 };

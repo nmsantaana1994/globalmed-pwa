@@ -1,6 +1,36 @@
 <script>
+import { useSession, clearSession } from './session.js';
+import { useRouter } from 'vue-router';
+import Notification from './components/Notification.vue';
+import { useNotifications } from './notification.js';
+
 export default {
     name: 'App',
+    components: {
+        Notification,
+    },
+    setup() {
+        const session = useSession();
+        const router = useRouter();
+        const { notifications, addNotification, removeNotification } = useNotifications();
+        
+        const logout = () => {
+            clearSession();
+            router.push('/login');
+        };
+
+        // Añadir una notificación de bienvenida cuando el usuario se loguea
+        if (session.value) {
+            addNotification(`Bienvenido de vuelta, ${session.value}`);
+        }
+
+        return {
+            session,
+            logout,
+            notifications,
+            removeNotification,
+        };
+    }
 }
 </script>
 
@@ -15,11 +45,14 @@ export default {
                         <li class="nav-item me-2">
                             <router-link to='/' class="nav-link active">Home</router-link>
                         </li>
-                        <li class="nav-item me-2">
-                            <router-link to='/lectura-pedidos' class="nav-link active">LecturaFC</router-link>
+                        <li v-if="session" class="nav-item me-2">
+                            <router-link to="/lectura-pedidos" class="nav-link active">LecturaFC</router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link to='/login' class="nav-link active">Login</router-link>
+                        <li v-if="!session" class="nav-item">
+                            <router-link to="/login" class="nav-link active">Login</router-link>
+                        </li>
+                        <li v-if="session" class="nav-item">
+                            <a href="#" class="nav-link active" @click.prevent="logout">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -33,6 +66,17 @@ export default {
         <footer class="bg-light">
             <p class="text-center my-2">&copy; Nico Santa Ana 2024</p>
         </footer>
+
+        <!-- Notificaciones -->
+        <div class="notifications">
+            <Notification
+                v-for="notification in notifications"
+                :key="notification.id"
+                :message="notification.message"
+                :duration="notification.duration"
+                @close="removeNotification(notification.id)"
+            />
+        </div>
     </div>
 </template>
 
@@ -41,12 +85,21 @@ export default {
         height: 100%;
         margin: 0;
     }
+    
     .wrapper {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
     }
+
     .content {
         flex: 1;
+    }
+
+    .notifications {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 1000;
     }
 </style>

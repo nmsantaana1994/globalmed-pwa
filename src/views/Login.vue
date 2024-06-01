@@ -1,6 +1,9 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { setSession } from '../session.js';
+import { useNotifications } from '../notification.js';
 
 export default {
     name: 'Login',
@@ -8,6 +11,8 @@ export default {
         const usuario = ref('');
         const password = ref('');
         const error = ref('');
+        const router = useRouter();
+        const { addNotification } = useNotifications();
 
         const handleSubmit = async (event) => {
             event.preventDefault();
@@ -18,8 +23,14 @@ export default {
                 console.log("Password: ", password.value);
                 const response = await axios.get(`/api/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
                 console.log("Response: ", response);
+
+                // Prueba response con error
+                // response.data.Resultado = "404";
+
                 if (response.data.Resultado === 'OK') {
-                    alert('Login successful');
+                    setSession(usuario.value);
+                    // alert('Login successful');
+                    addNotification(`Bienvenido de vuelta, ${usuario.value}`);
                     router.push('/'); // Redirige a la ruta home o donde desees
                     // Manejar redirección o almacenamiento de sesión
                 } else {

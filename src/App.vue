@@ -10,11 +10,11 @@ export default {
         Notification,
     },
     setup() {
-        const session = useSession();
-        const router = useRouter();
-        const { notifications, addNotification, removeNotification } = useNotifications();
+        let session = useSession();
+        let router = useRouter();
+        let { notifications, addNotification, removeNotification } = useNotifications();
         
-        const logout = () => {
+        let logout = () => {
             clearSession();
             router.push('/login');
         };

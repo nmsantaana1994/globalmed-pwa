@@ -8,20 +8,20 @@ import { useNotifications } from '../notification.js';
 export default {
     name: 'Login',
     setup() {
-        const usuario = ref('');
-        const password = ref('');
-        const error = ref('');
-        const router = useRouter();
-        const { addNotification } = useNotifications();
+        let usuario = ref('');
+        let password = ref('');
+        let error = ref('');
+        let router = useRouter();
+        let { addNotification } = useNotifications();
 
-        const handleSubmit = async (event) => {
+        let handleSubmit = async (event) => {
             event.preventDefault();
             error.value = '';
 
             try {
                 console.log("Usuario: ", usuario.value);
                 console.log("Password: ", password.value);
-                const response = await axios.get(`/api/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
+                let response = await axios.get(`/api/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
                 console.log("Response: ", response);
 
                 // Prueba response con error

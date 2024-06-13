@@ -17,7 +17,6 @@ export default {
             try {
                 let response = await axios.get(`/api/datasnap/rest/TSrvMethods/ListaPedido/${pedido.value}`);
                 if (response.data.Resultado === 'OK') {
-                    console.log("Pedido ok, response.data: ", response.data)
                     pedidoData.value = response.data;
 
                     // Marcar ítems completados y reordenar al cargar los datos
@@ -58,6 +57,7 @@ export default {
             }
         };
 
+        // Función para reordenar los ítems, moviendo los completados al final
         let reorderItems = () => {
             pedidoData.value.Items.sort((a, b) => {
                 if (a.completed && !b.completed) return 1;
@@ -86,7 +86,7 @@ export default {
             <label for="pedidoInput" class="form-label">Nro de Pedido</label>
             <input type="text" class="form-control" id="pedidoInput" v-model="pedido" required>
         </div>
-        <button type="submit" class="btn btn-primary">Buscar Pedido</button>
+        <button type="submit" class="btn btn-primary w-100">Buscar Pedido</button>
     </form>
 
     <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div>

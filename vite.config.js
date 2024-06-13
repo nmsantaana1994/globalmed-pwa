@@ -51,7 +51,7 @@ export default {
         proxy: {
             "/api": {
                 target: "http://localhost:63644",
-                // target: "http://localhost",
+                // target: "http://192.168.100.45:63644",
                 // target: "http://192.168.100.45:63644",
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ""),

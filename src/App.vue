@@ -37,29 +37,29 @@ export default {
 <template>
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-light bg-dark py-0">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">GlobalMed</a>
+                <a class="navbar-brand" href="#"><img src="../public/img/logoGlobal.png" alt="Logo GlobalMed" class="w-25"></a>
                 <div class="d-flex">
                     <ul class="navbar-nav flex-row">
                         <li class="nav-item me-2">
-                            <router-link to='/' class="nav-link active">Home</router-link>
+                            <router-link to='/' class="nav-link active text-white">Home</router-link>
                         </li>
                         <li v-if="session" class="nav-item me-2">
-                            <router-link to="/lectura-pedidos" class="nav-link active">LecturaFC</router-link>
+                            <router-link to="/lectura-pedidos" class="nav-link active text-white">LecturaFC</router-link>
                         </li>
                         <li v-if="!session" class="nav-item">
-                            <router-link to="/login" class="nav-link active">Login</router-link>
+                            <router-link to="/login" class="nav-link active text-white">Login</router-link>
                         </li>
                         <li v-if="session" class="nav-item">
-                            <a href="#" class="nav-link active" @click.prevent="logout">Logout</a>
+                            <a href="#" class="nav-link active text-white" @click.prevent="logout">Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     
-        <main class="container content">
+        <main class="container-fluid content">
             <router-view />
         </main>
     
@@ -74,6 +74,9 @@ export default {
                 :key="notification.id"
                 :message="notification.message"
                 :duration="notification.duration"
+                :fullScreen="notification.fullScreen" 
+                :autoClose="notification.autoClose"
+                :type="notification.type"
                 @close="removeNotification(notification.id)"
             />
         </div>

@@ -5,14 +5,14 @@ const notifications = ref([]);
 export function useNotifications() {
     return {
         notifications,
-        addNotification(message, duration = 3000) {
+        addNotification(message, options = {}) {
             const id = Date.now();
-            notifications.value.push({ id, message, duration });
-            if (duration > 0) {
+            const { duration = 3000, autoClose = true, fullScreen = false, type = 'success' } = options;
+            notifications.value.push({ id, message, duration, autoClose, fullScreen, type });
+
+            if (autoClose && duration > 0) {
                 setTimeout(() => {
-                    const index = notifications.value.findIndex(
-                        (n) => n.id === id
-                    );
+                    const index = notifications.value.findIndex((n) => n.id === id);
                     if (index !== -1) {
                         notifications.value.splice(index, 1);
                     }
@@ -27,3 +27,4 @@ export function useNotifications() {
         },
     };
 }
+

@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useNotifications } from '../notification.js';
 
 export default {
     name: 'LecturaPedidos',
@@ -9,6 +10,7 @@ export default {
         let pedidoData = ref(null);
         let error = ref(null);
         let scannedBarcode = ref('');
+        let { addNotification } = useNotifications();
 
         let fetchPedido = async () => {
             error.value = null;
@@ -28,6 +30,7 @@ export default {
                         }
                     });
                     reorderItems();
+                    addNotification(`Pedido ${pedido.value} cargado correctamente`, { duration: 1500, autoClose: true, fullScreen: false, type: 'success' });
                 } else {
                     error.value = 'No se pudo encontrar el pedido.';
                 }
@@ -48,12 +51,14 @@ export default {
                         item.completed = true;
                     }
                 } else {
-                    alert('Cantidad ya completada.')
+                    addNotification(`Cantidad ya completada.`, { duration: 0, autoClose: false, fullScreen: true, type: 'danger' });
+                    // alert('Cantidad ya completada.')
                 }
                 scannedBarcode.value = '';
                 reorderItems();
             } else {
-                alert('Código de barra no encontrado en el pedido.')
+                addNotification(`Código de barra no encontrado en el pedido.`, { duration: 0, autoClose: false, fullScreen: false, type: 'warning' });
+                // alert('Código de barra no encontrado en el pedido.')
             }
         };
 
@@ -62,8 +67,29 @@ export default {
             pedidoData.value.Items.sort((a, b) => {
                 if (a.completed && !b.completed) return 1;
                 if (!a.completed && b.completed) return -1;
+                
+                if (a.Estanteria < b.Estanteria) return -1;
+                if (a.Estanteria > b.Estanteria) return 1;
                 return 0;
             });
+        };
+
+        // Función para obtener la clase CSS según el nivel de vencimiento
+        let getColorClass = (nivelVto) => {
+            switch (nivelVto) {
+                case '1':
+                    return 'nivel-1';
+                case '2':
+                    return 'nivel-2';
+                case '3':
+                    return 'nivel-3';
+                case '4':
+                    return 'nivel-4';
+                case '5':
+                    return 'nivel-5';
+                default:
+                    return '';
+            }
         };
 
         return {
@@ -72,60 +98,92 @@ export default {
             error,
             fetchPedido,
             scannedBarcode,
-            processBarcode
+            processBarcode,
+            getColorClass
         };
     }
 }
 </script>
 
 <template>
-    <h1 class="text-center my-3">Lectura de Pedidos</h1>
+    <h1 class="text-center my-1 h3">Lectura de Pedidos</h1>
 
     <form @submit.prevent="fetchPedido">
-        <div class="mb-3">
-            <label for="pedidoInput" class="form-label">Nro de Pedido</label>
-            <input type="text" class="form-control" id="pedidoInput" v-model="pedido" required>
+        <div class="row">
+            <div class="col-6">
+                <!-- <label for="pedidoInput" class="form-label">Nro de Pedido</label> -->
+                <input type="text" class="form-control form-control-sm" id="pedidoInput" v-model="pedido" placeholder="Nro de Pedido" required autofocus>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary btn-sm w-100">Buscar Pedido</button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Buscar Pedido</button>
     </form>
 
     <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div>
 
-    <div v-if="pedidoData && pedidoData.Items && !error" class="mt-3">
-        <h2>Pedido {{ pedido }}</h2>
+    <div v-if="pedidoData && pedidoData.Items && !error" class="mt-2">
 
-        <div class="mb-3">
-            <label for="barcodeInput" class="form-label">Escanear Código de Barras</label>
-            <input type="text" class="form-control" id="barcodeInput" v-model="scannedBarcode" @keyup.enter="processBarcode">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="h5">Pedido {{ pedido }}</h2>
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control form-control-sm" id="barcodeInput" v-model="scannedBarcode" @keyup.enter="processBarcode" placeholder="Escanear Código de Barras" autofocus required>
+            </div>
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped custom-table">
             <thead>
                 <tr>
-                    <th scope="col">Productos</th>
-                    <th scope="col">Laboratorio</th>
-                    <th scope="col">CodBarra</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Estanteria</th>
-                    <th scope="col">Controlado</th>
+                    <th scope="col">Est</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">CodBar</th>
+                    <th scope="col">Cant</th>
+                    <!--<th scope="col">Laboratorio</th>-->
+                    <th scope="col">Ctrl</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in pedidoData.Items" :key="item.NRO_ITEM" :class="{ 'table-success': item.completed }">
-                    <td>{{ item.Producto }}</td>
-                    <td>{{ item.Laboratorio }}</td>
-                    <td>{{ item.CodBarra }}</td>
-                    <td>{{ item.Cantidad }}</td>
-                    <td>{{ item.Estanteria }}</td>
-                    <td>{{ item.Controlado }}</td>
+                    <td :class="getColorClass(item.NivelVto)">{{ item.Estanteria }}</td>
+                    <td :class="getColorClass(item.NivelVto)">{{ item.Producto }}</td>
+                    <td :class="getColorClass(item.NivelVto)">{{ item.CodBarra }}</td>
+                    <td :class="getColorClass(item.NivelVto)">{{ item.Cantidad }}</td>
+                    <!--<td>{{ item.Laboratorio }}</td>-->
+                    <td :class="getColorClass(item.NivelVto)">{{ item.Controlado }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
 
-<style>
+<style scoped>
     .table-success {
-        background-color: #4bb543 !important;
+        background-color: #4bb543;
+    }
+
+    .nivel-1 {
+        color: #CC483F;
+    }
+
+    .nivel-2 {
+        color: #C1B11D;
+    }
+
+    .nivel-3 {
+        color: #277FFF;
+    }
+
+    .nivel-4 {
+        color: #241CED;
+    }
+
+    .nivel-5 {
+        color: #130C98;
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 0;
     }
 </style>

@@ -19,8 +19,6 @@ export default {
             error.value = '';
 
             try {
-                console.log("Usuario: ", usuario.value);
-                console.log("Password: ", password.value);
                 let response = await axios.get(`/api/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
                 console.log("Response: ", response);
 
@@ -30,8 +28,8 @@ export default {
                 if (response.data.Resultado === 'OK') {
                     setSession(usuario.value);
                     // alert('Login successful');
-                    addNotification(`Bienvenido de vuelta, ${usuario.value}`);
-                    router.push('/'); // Redirige a la ruta home o donde desees
+                    addNotification(`Bienvenido de vuelta, ${usuario.value}`, { duration: 3000, autoClose: true, fullScreen: false });
+                    router.push('/lectura-pedidos'); // Redirige a la ruta lectura-pedidos
                     // Manejar redirección o almacenamiento de sesión
                 } else {
                     error.value = 'Login failed. Please check your credentials.';
@@ -57,14 +55,12 @@ export default {
     <form class="mb-3" @submit="handleSubmit">
         <!-- Email input -->
         <div data-mdb-input-init class="form-outline mb-4">
-            <input type="text" id="usuario" v-model="usuario" class="form-control" />
-            <label class="form-label" for="usuario">Usuario</label>
+            <input type="text" id="usuario" v-model="usuario" class="form-control form-control-sm" placeholder="Usuario" />
         </div>
 
         <!-- Password input -->
         <div data-mdb-input-init class="form-outline mb-4">
-            <input type="password" id="password" v-model="password" class="form-control" />
-            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" v-model="password" class="form-control form-control-sm" placeholder="Contraseña" />
         </div>
 
         <!-- Error message -->
@@ -73,10 +69,10 @@ export default {
         </div>
 
         <!-- Submit button -->
-        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block w-100">Sign in</button>
+        <button data-mdb-ripple-init type="submit" class="btn btn-sm btn-primary btn-block w-100">Sign in</button>
     </form> 
 </template>
 
-<style>
+<style scoped>
 /* Añadir estilos personalizados si es necesario */
 </style>

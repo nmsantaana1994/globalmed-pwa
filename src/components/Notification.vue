@@ -4,6 +4,7 @@
             <p class="fw-semibold mb-0">{{ message }}</p>
             
             <button type="button" class="btn-close" @click="closeNotification" aria-label="Close"></button>
+            <!-- <button @click="playAlertSound">Play Sound</button> -->
         </div>
     </div>
 </template>
@@ -33,13 +34,22 @@ export default {
             default: 'success',
             validator: value => ['success', 'warning', 'danger', 'info'].includes(value)
         },
+        // playSound: {
+        //     type: Boolean,
+        //     default: false,
+        // },
     },
     data() {
         return {
             visible: true,
+            alertSound: null,
         };
     },
     mounted() {
+        // console.log("PlaySound: ", this.playSound);
+        // if (this.playSound) {
+            this.playAlertSound();
+        // }
         if (this.autoClose && this.duration > 0) {
             setTimeout(() => {
                 this.visible = false;
@@ -49,6 +59,16 @@ export default {
     methods: {
         closeNotification() {
             this.visible = false;
+        },
+        playAlertSound() {
+            try {
+                this.alertSound = new Audio('/src/assets/sounds/alert.mp3');
+                this.alertSound.play().catch(error => {
+                    console.error('Error al reproducir el sonido:', error);
+                });
+            } catch (error) {
+                console.error('Error al cargar el archivo de sonido:', error);
+            }
         },
     },
 };

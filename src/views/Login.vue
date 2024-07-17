@@ -28,7 +28,7 @@ export default {
                 if (response.data.Resultado === 'OK') {
                     setSession(usuario.value);
                     // alert('Login successful');
-                    addNotification(`Bienvenido de vuelta, ${usuario.value}`, { duration: 3000, autoClose: true, fullScreen: false });
+                    addNotification(`Bienvenido de vuelta, ${usuario.value}`, { duration: 3000, autoClose: true, fullScreen: false, playSound: true });
                     router.push('/lectura-pedidos'); // Redirige a la ruta lectura-pedidos
                     // Manejar redirección o almacenamiento de sesión
                 } else {

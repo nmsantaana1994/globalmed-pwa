@@ -142,6 +142,7 @@ export default {
                     <th scope="col">Cant</th>
                     <!--<th scope="col">Laboratorio</th>-->
                     <th scope="col">Ctrl</th>
+                    <th scope="col">Repo</th>
                 </tr>
             </thead>
             <tbody>
@@ -152,6 +153,7 @@ export default {
                     <td :class="getColorClass(item.NivelVto)">{{ item.Cantidad }}</td>
                     <!--<td>{{ item.Laboratorio }}</td>-->
                     <td :class="getColorClass(item.NivelVto)">{{ item.Controlado }}</td>
+                    <td><input class="form-check-input" type="checkbox" value="" id='flexCheck{{ item.CodBarra }}'></td>
                 </tr>
             </tbody>
         </table>

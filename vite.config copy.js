@@ -6,7 +6,30 @@ export default {
         vue(),
         VitePWA({
             registerType: "autoUpdate",
-            manifest: false,
+            manifest: {
+                name: "GlobalMed PWA",
+                short_name: "GlobalMed",
+                description: "PWA desarrollada para uso en desposito de GlobalMed",
+                theme_color: "#ffffff",
+                background_color: "#ffffff",
+                display: "standalone",
+                orientation: "landscape",
+                scope: "/",
+                start_url: "/login",
+                icons: [
+                    {
+                        src: "img/icons/android-chrome-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                    },
+                    {
+                        src: "img/icons/android-chrome-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+                splash_pages: null,
+            },
             workbox: {
                 runtimeCaching: [
                     {

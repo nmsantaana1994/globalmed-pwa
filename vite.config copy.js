@@ -9,7 +9,8 @@ export default {
             manifest: {
                 name: "GlobalMed PWA",
                 short_name: "GlobalMed",
-                description: "PWA desarrollada para uso en desposito de GlobalMed",
+                description:
+                    "PWA desarrollada para uso en desposito de GlobalMed",
                 theme_color: "#ffffff",
                 background_color: "#ffffff",
                 display: "standalone",
@@ -47,6 +48,7 @@ export default {
             },
         }),
     ],
+    base: "/", // O la URL base correcta si no es el dominio raíz
     server: {
         proxy: {
             "/api": {

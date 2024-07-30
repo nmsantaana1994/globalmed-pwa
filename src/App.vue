@@ -42,9 +42,9 @@ export default {
                 <a class="navbar-brand" href="#"><img src="../public/img/logoGlobal.png" alt="Logo GlobalMed" class="w-25"></a>
                 <div class="d-flex">
                     <ul class="navbar-nav flex-row">
-                        <li class="nav-item me-2">
+                        <!-- <li class="nav-item me-2">
                             <router-link to='/' class="nav-link active text-white">Home</router-link>
-                        </li>
+                        </li> -->
                         <li v-if="session" class="nav-item me-2">
                             <router-link to="/lectura-pedidos" class="nav-link active text-white">LecturaFC</router-link>
                         </li>

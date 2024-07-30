@@ -48,7 +48,7 @@ export default {
             },
         }),
     ],
-    base: "/", // O la URL base correcta si no es el dominio raíz
+    // base: "/", // O la URL base correcta si no es el dominio raíz
     server: {
         proxy: {
             "/api": {

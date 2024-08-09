@@ -51,13 +51,13 @@ export default {
                         item.completed = true;
                     }
                 } else {
-                    addNotification(`Cantidad ya completada.`, { duration: 0, autoClose: false, fullScreen: true, type: 'danger' });
+                    addNotification(`Cantidad ya completada.`, { duration: 0, autoClose: false, fullScreen: true, type: 'danger', playSound: true });
                     // alert('Cantidad ya completada.')
                 }
                 scannedBarcode.value = '';
                 reorderItems();
             } else {
-                addNotification(`Código de barra no encontrado en el pedido.`, { duration: 0, autoClose: false, fullScreen: false, type: 'warning' });
+                addNotification(`Código de barra no encontrado en el pedido.`, { duration: 0, autoClose: false, fullScreen: false, type: 'warning', playSound: true });
                 // alert('Código de barra no encontrado en el pedido.')
             }
         };
@@ -106,9 +106,9 @@ export default {
 </script>
 
 <template>
-    <h1 class="text-center my-1 h3">Lectura de Pedidos</h1>
+    <!-- <h1 class="text-center my-1 h3">Lectura de Pedidos</h1> -->
 
-    <form @submit.prevent="fetchPedido">
+    <form @submit.prevent="fetchPedido" class="my-3">
         <div class="row">
             <div class="col-6">
                 <!-- <label for="pedidoInput" class="form-label">Nro de Pedido</label> -->

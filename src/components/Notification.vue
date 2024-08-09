@@ -34,21 +34,28 @@ export default {
             default: 'success',
             validator: value => ['success', 'warning', 'danger', 'info'].includes(value)
         },
-        // playSound: {
-        //     type: Boolean,
-        //     default: false,
-        // },
+        playSound: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             visible: true,
             alertSound: null,
+            // localPlaySound: this.playSound, // Crea una copia local del prop
         };
     },
     mounted() {
-        // console.log("PlaySound: ", this.playSound);
-        // if (this.playSound) {
+        console.log("Props recibidos en Notification.vue: ", this.$props);
+        console.log("PlaySound en mounted: ", this.playSound);
+        // console.log("PlaySound es reactivo:", this.$props.playSound);
+        // console.log("PlaySound en mounted (local): ", this.localPlaySound);
+        if (this.playSound) {
             this.playAlertSound();
+        }
+        // if (this.localPlaySound) {
+        //     this.playAlertSound();
         // }
         if (this.autoClose && this.duration > 0) {
             setTimeout(() => {
@@ -75,19 +82,19 @@ export default {
 </script>
 
 <style scoped>
-.alert {
-    z-index: 1000;
-}
+    .alert {
+        z-index: 1000;
+    }
 
-.full-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 0 !important;
-}
+    .full-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 0 !important;
+    }
 </style>

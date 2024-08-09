@@ -21,7 +21,7 @@ export default {
 
         // Añadir una notificación de bienvenida cuando el usuario se loguea
         if (session.value) {
-            addNotification(`Bienvenido de vuelta, ${session.value}`);
+            addNotification(`Bienvenido de vuelta App.vue, ${session.value}`);
         }
 
         return {
@@ -77,6 +77,7 @@ export default {
                 :fullScreen="notification.fullScreen" 
                 :autoClose="notification.autoClose"
                 :type="notification.type"
+                :playSound="notification.playSound"
                 @close="removeNotification(notification.id)"
             />
         </div>

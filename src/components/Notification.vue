@@ -47,8 +47,8 @@ export default {
         };
     },
     mounted() {
-        console.log("Props recibidos en Notification.vue: ", this.$props);
-        console.log("PlaySound en mounted: ", this.playSound);
+        // console.log("Props recibidos en Notification.vue: ", this.$props);
+        // console.log("PlaySound en mounted: ", this.playSound);
         // console.log("PlaySound es reactivo:", this.$props.playSound);
         // console.log("PlaySound en mounted (local): ", this.localPlaySound);
         if (this.playSound) {

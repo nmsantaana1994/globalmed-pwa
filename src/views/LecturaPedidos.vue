@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useNotifications } from '../notification.js';
 
 export default {
@@ -11,15 +11,34 @@ export default {
         let error = ref(null);
         let scannedBarcode = ref('');
         let { addNotification } = useNotifications();
+        let showControlButton = ref(false); // Variable para controlar la visibilidad del botón
+        let usuario = ref('');
+
+        // Recuperamos el valor de 'usuario' del localStorage
+        onMounted(() => {
+            let sessionData = localStorage.getItem('session');
+            if (sessionData) {
+                try {
+                    let parsedSessionData = JSON.parse(sessionData);
+                    usuario.value = parsedSessionData.usuario || ''; // Asigna el valor del usuario o una cadena vacía
+                    console.log("Data session LocalStorage usuario: ", usuario.value);
+                } catch (e) {
+                    console.error('Error parsing session data from localStorage:', e);
+                }
+            }
+        });
 
         let fetchPedido = async () => {
             error.value = null;
             pedidoData.value = null;
+            showControlButton.value = false; // Ocultar el botón al comenzar una nueva búsqueda
 
             try {
                 let response = await axios.get(`/api/datasnap/rest/TSrvMethods/ListaPedido/${pedido.value}`);
                 if (response.data.Resultado === 'OK') {
                     pedidoData.value = response.data;
+
+                    console.log("ListaPedido API: ", pedidoData.value);
 
                     // Marcar ítems completados y reordenar al cargar los datos
                     pedidoData.value.Items.forEach(item => {
@@ -31,6 +50,7 @@ export default {
                     });
                     reorderItems();
                     addNotification(`Pedido ${pedido.value} cargado correctamente`, { duration: 1500, autoClose: true, fullScreen: false, type: 'success' });
+                    showControlButton.value = true; // Mostrar el botón una vez cargado el pedido
                 } else {
                     error.value = 'No se pudo encontrar el pedido.';
                 }
@@ -92,6 +112,51 @@ export default {
             }
         };
 
+        let controlPedido = async () => {
+            let itemsToControl = pedidoData.value.Items.map(item => {
+                return {
+                    "NRO_SUBDI": item.NRO_SUBDI,
+                    "NRO_ITEM": item.NRO_ITEM,
+                    "Producto": item.Producto,
+                    "Laboratorio": item.Laboratorio,
+                    "CodBarra": item.CodBarra,
+                    "CodBarraAlt": item.CodBarraAlt,
+                    "Cantidad": item.Cantidad,
+                    "Corte": item.Corte,
+                    "Packs": item.Packs,
+                    "Estanteria": item.Estanteria,
+                    "Estante": item.Estante,
+                    "Controlado": item.Controlado,
+                    "Repo": document.getElementById(`flexCheck${item.CodBarra}`).checked // Obtener el estado del checkbox
+                };
+            });
+
+            let requestData = {
+                "Usuario": usuario.value,
+                "Factura": pedido.value,
+                "Items": itemsToControl
+            };
+
+            try {
+                console.log("Datos para enviar en Json de Control: ", requestData);
+                // return;
+                let response = await axios.post('/api/datasnap/rest/TSrvMethods/Controlado', requestData);
+                if (response.data.Resultado === 'OK') {
+                    addNotification(`Control del pedido ${pedido.value} realizado con éxito.`, { duration: 3000, autoClose: true, fullScreen: false, type: 'success' });
+
+                    // Limpiar la pantalla y volver al formulario de búsqueda
+                    pedido.value = '';
+                    pedidoData.value = null;
+                    scannedBarcode.value = '';
+                    showControlButton.value = false;
+                } else {
+                    addNotification(`Error al controlar el pedido: ${response.data.Error}`, { duration: 0, autoClose: false, fullScreen: true, type: 'danger' });
+                }
+            } catch (err) {
+                addNotification('Error al conectar con la API para controlar el pedido.', { duration: 0, autoClose: false, fullScreen: true, type: 'danger' });
+            }
+        };
+
         return {
             pedido,
             pedidoData,
@@ -99,7 +164,9 @@ export default {
             fetchPedido,
             scannedBarcode,
             processBarcode,
-            getColorClass
+            getColorClass,
+            showControlButton, // Añadir a los datos que retornamos
+            controlPedido // Añadir la función para controlar el pedido
         };
     }
 }
@@ -108,10 +175,9 @@ export default {
 <template>
     <!-- <h1 class="text-center my-1 h3">Lectura de Pedidos</h1> -->
 
-    <form @submit.prevent="fetchPedido" class="my-3">
+    <form v-if="!showControlButton" @submit.prevent="fetchPedido" class="my-2">
         <div class="row">
             <div class="col-6">
-                <!-- <label for="pedidoInput" class="form-label">Nro de Pedido</label> -->
                 <input type="text" class="form-control form-control-sm" id="pedidoInput" v-model="pedido" placeholder="Nro de Pedido" required autofocus>
             </div>
             <div class="col-6">
@@ -120,11 +186,13 @@ export default {
         </div>
     </form>
 
-    <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div>
+    <button v-else @click="controlPedido" class="btn btn-danger btn-sm w-100 mt-2">Control Pedido</button>
+
+    <div v-if="error" class="alert alert-danger mt-2">{{ error }}</div>
 
     <div v-if="pedidoData && pedidoData.Items && !error" class="mt-2">
 
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-12">
                 <h2 class="h5">Pedido {{ pedido }}</h2>
             </div>
@@ -153,7 +221,7 @@ export default {
                     <td :class="getColorClass(item.NivelVto)">{{ item.Cantidad }}</td>
                     <!--<td>{{ item.Laboratorio }}</td>-->
                     <td :class="getColorClass(item.NivelVto)">{{ item.Controlado }}</td>
-                    <td><input class="form-check-input" type="checkbox" value="" id='flexCheck{{ item.CodBarra }}'></td>
+                    <td><input class="form-check-input" type="checkbox" :value="item.Repo" :id="'flexCheck' + item.CodBarra" v-model="item.Repo"></td>
                 </tr>
             </tbody>
         </table>

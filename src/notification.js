@@ -13,9 +13,9 @@ export function useNotifications() {
                 ...options, // Desestructuramos el objeto options
             };
 
-            console.log("Adding notification:", notification);
+            // console.log("Adding notification:", notification);
             notifications.value.push(notification);
-            console.log("notification.js notifications: ", notifications);
+            // console.log("notification.js notifications: ", notifications);
 
             if (notification.autoClose && notification.duration > 0) {
                 setTimeout(() => {

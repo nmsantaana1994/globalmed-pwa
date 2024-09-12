@@ -17,24 +17,33 @@ export default {
         let handleSubmit = async (event) => {
             event.preventDefault();
             error.value = '';
-
+            
             try {
-                let response = await axios.get(`/api/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
+                let response = await fetch(`http://192.168.100.44:63644/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
+                // let response = await fetch(`http://192.168.100.45:63644/datasnap/rest/TSrvMethods/Login/${usuario.value}/${password.value}`);
+
                 console.log("Response: ", response);
 
+                // Extraer el cuerpo de la respuesta en formato JSON (o usar otro método si el formato es diferente)
+                let data = await response.json();
+
+                // Imprimir los datos en la consola o almacenarlos en el estado del componente
+                console.log("response data: ", data);
+                console.log("data.Resultado: ", data.Resultado);
                 // Prueba response con error
                 // response.data.Resultado = "404";
 
-                if (response.data.Resultado === 'OK') {
+                if (data.Resultado === 'OK') {
                     setSession(usuario.value);
                     // alert('Login successful');
                     addNotification(`Bienvenido de vuelta Login.vue, ${usuario.value}`, { duration: 3000, autoClose: true, fullScreen: false });
                     router.push('/lectura-pedidos'); // Redirige a la ruta lectura-pedidos
                     // Manejar redirección o almacenamiento de sesión
                 } else {
-                    error.value = 'Login failed. Please check your credentials.';
+                    error.value = 'Login failed. Por favor revise sus credenciales.';
                 }
             } catch (err) {
+                // throw err
                 error.value = 'Error connecting to the API';
             };
         };

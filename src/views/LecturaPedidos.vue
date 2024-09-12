@@ -34,9 +34,13 @@ export default {
             showControlButton.value = false; // Ocultar el botón al comenzar una nueva búsqueda
 
             try {
-                let response = await axios.get(`/api/datasnap/rest/TSrvMethods/ListaPedido/${pedido.value}`);
-                if (response.data.Resultado === 'OK') {
-                    pedidoData.value = response.data;
+                let response = await fetch(`http://192.168.100.44:63644/datasnap/rest/TSrvMethods/ListaPedido/${pedido.value}`);
+
+                // Extraer el cuerpo de la respuesta en formato JSON (o usar otro método si el formato es diferente)
+                let data = await response.json();
+
+                if (data.Resultado === 'OK') {
+                    pedidoData.value = data;
 
                     console.log("ListaPedido API: ", pedidoData.value);
 
@@ -140,8 +144,19 @@ export default {
             try {
                 console.log("Datos para enviar en Json de Control: ", requestData);
                 // return;
-                let response = await axios.post('/api/datasnap/rest/TSrvMethods/Controlado', requestData);
-                if (response.data.Resultado === 'OK') {
+                // let response = await axios.post('/api/datasnap/rest/TSrvMethods/Controlado', requestData);
+
+                let response = await fetch('http://192.168.100.45:63644/datasnap/rest/TSrvMethods/Controlado', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Asegúrate de especificar los encabezados necesarios
+                    },
+                    body: JSON.stringify(requestData) // Convierte los datos a una cadena JSON
+                });
+
+                let data = await response.json();
+
+                if (data.Resultado === 'OK') {
                     addNotification(`Control del pedido ${pedido.value} realizado con éxito.`, { duration: 3000, autoClose: true, fullScreen: false, type: 'success' });
 
                     // Limpiar la pantalla y volver al formulario de búsqueda

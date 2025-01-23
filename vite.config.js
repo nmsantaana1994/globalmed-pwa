@@ -24,19 +24,4 @@ export default {
             },
         }),
     ],
-    // base: '/PWA/', // Ajustar la base si es necesario
-    // build: {
-    //     outDir: 'dist',
-    // },
-    // server: {
-    //     proxy: {
-    //         "/api": {
-    //             // target: "http://localhost:63644",
-    //             // target: "http://172.27.144.1:63644",
-    //             target: "http://192.168.100.45:63644",
-    //             changeOrigin: false,
-    //             rewrite: (path) => path.replace(/^\/api/, ""),
-    //         },
-    //     },
-    // },
 };

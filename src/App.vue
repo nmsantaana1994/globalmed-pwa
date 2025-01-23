@@ -35,24 +35,25 @@ export default {
 </script>
 
 <template>
-    <div class="wrapper">
+    <!-- <div class="wrapper"> -->
         <!-- Navbar -->
         <nav class="navbar navbar-light bg-dark py-0">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="../public/img/logoGlobal.png" alt="Logo GlobalMed" class="w-25"></a>
+                <a class="navbar-brand" href="#"><img src="./img/logoGlobal.png" alt="Logo GlobalMed" class="w-25"></a>
                 <div class="d-flex">
                     <ul class="navbar-nav flex-row">
                         <!-- <li class="nav-item me-2">
                             <router-link to='/' class="nav-link active text-white">Home</router-link>
                         </li> -->
-                        <li v-if="session" class="nav-item me-2">
+                        <!-- <li v-if="session" class="nav-item me-2">
                             <router-link to="/lectura-pedidos" class="nav-link active text-white">LecturaFC</router-link>
-                        </li>
+                        </li> -->
                         <li v-if="!session" class="nav-item">
                             <router-link to="/login" class="nav-link active text-white">Login</router-link>
                         </li>
                         <li v-if="session" class="nav-item">
                             <a href="#" class="nav-link active text-white" @click.prevent="logout">Logout</a>
+                            <!-- <a href="#" class="nav-link active text-white" >Atras (volver a buscar pedido)</a> -->
                         </li>
                     </ul>
                 </div>
@@ -63,9 +64,9 @@ export default {
             <router-view />
         </main>
     
-        <footer class="bg-light">
+        <!-- <footer class="bg-light">
             <p class="text-center my-2">&copy; Nico Santa Ana 2024</p>
-        </footer>
+        </footer> -->
 
         <!-- Notificaciones -->
         <div class="notifications">
@@ -81,7 +82,7 @@ export default {
                 @close="removeNotification(notification.id)"
             />
         </div>
-    </div>
+    <!-- </div> -->
 </template>
 
 <style>
@@ -90,11 +91,11 @@ export default {
         margin: 0;
     }
     
-    .wrapper {
+    /* .wrapper {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-    }
+    } */
 
     .content {
         flex: 1;

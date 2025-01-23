@@ -11,11 +11,19 @@ export function useNotifications() {
                 id,
                 message,
                 ...options, // Desestructuramos el objeto options
+                onClose: options.onClose || null // Añadir la función de cierre si está definida
             };
 
             // console.log("Adding notification:", notification);
             notifications.value.push(notification);
             // console.log("notification.js notifications: ", notifications);
+
+            // if (notification.playSound) {
+            //     let alertSound = new Audio('/src/assets/sounds/alert.mp3');
+            //     alertSound.play().catch(error => {
+            //         console.error('Error al reproducir el sonido:', error);
+            //     });
+            // }
 
             if (notification.autoClose && notification.duration > 0) {
                 setTimeout(() => {

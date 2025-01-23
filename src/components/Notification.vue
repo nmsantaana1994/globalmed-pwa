@@ -13,31 +13,12 @@
 export default {
     name: 'Notification',
     props: {
-        message: {
-            type: String,
-            required: true,
-        },
-        duration: {
-            type: Number,
-            default: 3000,
-        },
-        autoClose: {
-            type: Boolean,
-            default: true,
-        },
-        fullScreen: {
-            type: Boolean,
-            default: false,
-        },
-        type: {
-            type: String,
-            default: 'success',
-            validator: value => ['success', 'warning', 'danger', 'info'].includes(value)
-        },
-        playSound: {
-            type: Boolean,
-            default: false,
-        },
+        message:    {   type: String,   required: true, },
+        duration:   {   type: Number,   default: 3000, },
+        autoClose:  {   type: Boolean,  default: true, },
+        fullScreen: {   type: Boolean,  default: false, },
+        type:       {   type: String,   default: 'success', validator: value => ['success', 'warning', 'danger', 'info'].includes(value) },
+        playSound:  {   type: Boolean,  default: false, },
     },
     data() {
         return {

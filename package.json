@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && powershell Copy-Item URL_API.ini dist/",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -14,6 +14,7 @@
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.7.2",
+    "ini": "^5.0.0",
     "vite-plugin-pwa": "^0.20.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"

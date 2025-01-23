@@ -26,6 +26,7 @@ export function setSession(userSession) {
 export function clearSession() {
     session.value = null;
     localStorage.removeItem("session");
+    localStorage.removeItem("pedidoActual");
 }
 
 export function useSession() {

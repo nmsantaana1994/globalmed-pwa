@@ -10,7 +10,7 @@ let app = createApp(App);
     try {
         // Cargar configuración del archivo config.json
         let config = await loadConfig();
-        console.log("config config.json: ", config);
+        console.log("Configuración config.json: ", config);
 
         // Proveer la configuración para toda la app
         app.provide('apiConfig', { ApiBaseUrl: config });

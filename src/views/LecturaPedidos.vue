@@ -143,7 +143,7 @@ export default {
             let barcode = scannedBarcode.value.trim();
             if (!barcode) return;
 
-            let item = pedidoData.value.Items.find(item => item.CodBarra.trim() === barcode);
+            let item = pedidoData.value.Items.find(item => item.CodBarra.trim() === barcode || item.CodBarraAlt.trim() === barcode);
             if (item) {
                 if (parseInt(item.Controlado) < parseInt(item.Cantidad)) {
                     item.Controlado = parseInt(item.Controlado) + 1;
@@ -153,7 +153,6 @@ export default {
                 } else {
                     addNotification(`Cantidad ya completada.`, { duration: 0, autoClose: false, fullScreen: true, type: 'danger', playSound: true });
                     scannedBarcode.value = '';
-                    // alert('Cantidad ya completada.')
                 }
                 scannedBarcode.value = '';
                 reorderItems();
@@ -161,7 +160,6 @@ export default {
             } else {
                 addNotification(`Código de barra no encontrado en el pedido.`, { duration: 0, autoClose: false, fullScreen: true, type: 'warning', playSound: true });
                 scannedBarcode.value = '';
-                // alert('Código de barra no encontrado en el pedido.')
             }
         };
 

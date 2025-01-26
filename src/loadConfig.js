@@ -1,13 +1,8 @@
-import ini from 'ini';
-
 export async function loadConfig() {
     try {
-        // Cargar el archivo .ini
-        const response = await fetch('/URL_API.ini');
-        const iniText = await response.text();
-
-        // Parsear el contenido del archivo .ini
-        const config = ini.parse(iniText);
+        // Cargar el archivo JSON
+        const response = await fetch('/config.json');
+        const config = await response.json();
 
         // Retornar la URL de la API
         return config.GENERAL.URL;

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && powershell Copy-Item URL_API.ini dist/",
+    "build": "vite build && powershell Copy-Item config.json dist/",
     "preview": "vite preview"
   },
   "devDependencies": {

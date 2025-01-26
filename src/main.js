@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router/router.js';
-// import { loadConfig } from './configLoader.js'; // Importa la función para cargar la configuración
 import { loadConfig } from './loadConfig.js';
 
 // Crear la aplicación de Vue
@@ -9,10 +8,9 @@ let app = createApp(App);
 
 (async () => {
     try {
-        // Cargar configuración del archivo web.config
+        // Cargar configuración del archivo config.json
         let config = await loadConfig();
-        console.log("config URL_API.ini: ", config);
-
+        console.log("config config.json: ", config);
 
         // Proveer la configuración para toda la app
         app.provide('apiConfig', { ApiBaseUrl: config });
@@ -23,17 +21,6 @@ let app = createApp(App);
         // Montar la aplicación
         app.mount('#app');
     } catch (error) {
-        console.error('Error al cargar la configuración desde web.config:', error);
+        console.error('Error al cargar la configuración desde config.json:', error);
     }
 })();
-
-
-// import { createApp } from 'vue';
-// import App from './App.vue';
-// import router from './router/router.js';
-
-// const app = createApp(App);
-
-// app.use(router);
-
-// app.mount('#app');
